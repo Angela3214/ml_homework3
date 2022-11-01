@@ -137,7 +137,7 @@ class MomentumDescent(VanillaGradientDescent):
         """
         self.h = self.h * self.alpha + self.lr() * gradient
         self.w -= self.h
-        return (-1) * self.h
+        return -self.h
 
 
 class Adam(VanillaGradientDescent):
