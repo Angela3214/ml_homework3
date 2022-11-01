@@ -4,8 +4,8 @@ from typing import List
 
 import numpy as np
 
-from descents import BaseDescent
-from descents import get_descent
+#from descents import BaseDescent
+#from descents import get_descent
 
 
 class LinearRegression:
@@ -33,8 +33,18 @@ class LinearRegression:
         :param y: targets array
         :return: self
         """
-        # TODO: fit weights to x and y
-        raise NotImplementedError('LinearRegression fit function not implemented')
+        self.descent.w = np.random.rand(len(self.descent.w))
+        self.loss_history = [self.calc_loss(x, y)]
+        new_val = self.descent.calc_gradient(x, y)
+        coef_weight = self.descent.update_weights(new_val)
+        self.loss_history.append(self.calc_loss(x, y))
+        i = 1
+        while i < self.max_iter and not (coef_weight == None).any() and np.linalg.norm(coef_weight) > self.tolerance ** 0.5:
+            new_val = self.descent.calc_gradient(x, y)
+            coef_weight = self.descent.update_weights(new_val)
+            self.loss_history.append(self.calc_loss(x, y))
+            i += 1
+        return self
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         """
