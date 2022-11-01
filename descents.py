@@ -74,8 +74,7 @@ class BaseDescent:
         :param y: targets array
         :return: loss: float
         """
-        # TODO: implement loss calculation function
-        raise NotImplementedError('BaseDescent calc_loss function not implemented')
+        return (np.linalg.norm(self.predict(x) - y)) ** 2 / len(x)
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         """
@@ -83,8 +82,7 @@ class BaseDescent:
         :param x: features array
         :return: prediction: np.ndarray
         """
-        # TODO: implement prediction function
-        raise NotImplementedError('BaseDescent predict function not implemented')
+        return x.dot(self.w)
 
 
 class VanillaGradientDescent(BaseDescent):
