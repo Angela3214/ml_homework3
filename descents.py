@@ -94,9 +94,9 @@ class VanillaGradientDescent(BaseDescent):
         """
         :return: weight difference (w_{k + 1} - w_k): np.ndarray
         """
-        new_weight = (-1) * self.lr() * gradient
-        self.w += new_weight
-        return new_weight
+        new_weight = self.lr() * gradient
+        self.w -= new_weight
+        return -new_weight
 
     def calc_gradient(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
         return 2 / len(y) * x.T.dot(x.dot(self.w) - y)
