@@ -94,12 +94,12 @@ class VanillaGradientDescent(BaseDescent):
         """
         :return: weight difference (w_{k + 1} - w_k): np.ndarray
         """
-        # TODO: implement updating weights function
-        raise NotImplementedError('VanillaGradientDescent update_weights function not implemented')
+        new_weight = (-1) * self.lr() * gradient
+        self.w += new_weight
+        return new_weight
 
     def calc_gradient(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
-        # TODO: implement calculating gradient function
-        raise NotImplementedError('VanillaGradientDescent calc_gradient function not implemented')
+        return 2 / len(y) * x.T.dot(x.dot(self.w) - y)
 
 
 class StochasticDescent(VanillaGradientDescent):
@@ -116,8 +116,8 @@ class StochasticDescent(VanillaGradientDescent):
         self.batch_size = batch_size
 
     def calc_gradient(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
-        # TODO: implement calculating gradient function
-        raise NotImplementedError('StochasticDescent calc_gradient function not implemented')
+        batch = np.random.randint(low=0, high=len(y), size=self.batch_size)
+        return super().calc_gradient(x[batch, :], y[batch])
 
 
 class MomentumDescent(VanillaGradientDescent):
@@ -135,8 +135,9 @@ class MomentumDescent(VanillaGradientDescent):
         """
         :return: weight difference (w_{k + 1} - w_k): np.ndarray
         """
-        # TODO: implement updating weights function
-        raise NotImplementedError('MomentumDescent update_weights function not implemented')
+        self.h = self.h * self.alpha + self.lr() * gradient
+        self.w -= self.h
+        return (-1) * self.h
 
 
 class Adam(VanillaGradientDescent):
@@ -160,8 +161,14 @@ class Adam(VanillaGradientDescent):
         """
         :return: weight difference (w_{k + 1} - w_k): np.ndarray
         """
-        # TODO: implement updating weights function
-        raise NotImplementedError('Adagrad update_weights function not implemented')
+        self.iteration += 1
+        self.m = self.beta_1 * self.m + (1 - self.beta_1) * gradient
+        self.v = self.beta_2 * self.v + (1 - self.beta_2) * (gradient ** 2)
+        m_step = self.m / (1 - self.beta_1 ** self.iteration)
+        v_step = self.v / (1 - self.beta_2 ** self.iteration)
+        step = (-1) * self.lr() / (v_step ** 0.5 + self.eps) * m_step
+        self.w += step
+        return step
 
 
 class BaseDescentReg(BaseDescent):
