@@ -116,7 +116,7 @@ class StochasticDescent(VanillaGradientDescent):
         self.batch_size = batch_size
 
     def calc_gradient(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
-        batch = np.random.randint(low=0, high=len(y), size=self.batch_size)
+        batch = np.random.randint(low=0, high=len(y) - 1, size=self.batch_size)
         return super().calc_gradient(x[batch, :], y[batch])
 
 
