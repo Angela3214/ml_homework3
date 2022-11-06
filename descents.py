@@ -74,7 +74,7 @@ class BaseDescent:
         :param y: targets array
         :return: loss: float
         """
-        return (np.linalg.norm(self.predict(x) - y)) ** 2 / len(x)
+        return (np.linalg.norm(self.predict(x) - y)) ** 2 / x.shape[0]
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         """
